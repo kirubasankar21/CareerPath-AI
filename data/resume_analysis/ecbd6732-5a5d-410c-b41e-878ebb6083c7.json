@@ -1,0 +1,113 @@
+{
+  "score": 11,
+  "missing_skills": [
+    "python",
+    "system design",
+    "leadership",
+    "mentoring",
+    "cloud",
+    "kubernetes",
+    "architecture",
+    "ci/cd"
+  ],
+  "strengths": [],
+  "suggestions": [
+    "Add explicit mentions of: python, system design, leadership, mentoring, cloud \u2014 aligned with your target role.",
+    "Use your target role title ('senior software engineer') in your summary or headline.",
+    "Add 1\u20132 bullet points with metrics (%, $, latency, adoption) to show impact.",
+    "Tailor keywords to each job posting (mirror phrasing from listings)."
+  ],
+  "recommended_courses": [
+    {
+      "title": "Python for Everybody (Coursera)",
+      "skill": "python"
+    },
+    {
+      "title": "Real Python Advanced Paths",
+      "skill": "python"
+    },
+    {
+      "title": "System Design Interview Prep (Educative)",
+      "skill": "system design"
+    },
+    {
+      "title": "ByteByteGo System Design",
+      "skill": "system design"
+    },
+    {
+      "title": "Leading Technical Teams (internal / LinkedIn Learning)",
+      "skill": "leadership"
+    },
+    {
+      "title": "Harvard Leadership principles",
+      "skill": "leadership"
+    },
+    {
+      "title": "Mentoring Skills for Engineers",
+      "skill": "mentoring"
+    },
+    {
+      "title": "Coaching for Performance",
+      "skill": "mentoring"
+    },
+    {
+      "title": "AWS Cloud Practitioner Essentials",
+      "skill": "cloud"
+    },
+    {
+      "title": "Google Cloud Fundamentals",
+      "skill": "cloud"
+    }
+  ],
+  "recommended_certifications": [
+    {
+      "name": "PCEP \u2014 Python Institute",
+      "skill": "python"
+    },
+    {
+      "name": "Google IT Automation with Python",
+      "skill": "python"
+    },
+    {
+      "name": "AWS Solutions Architect (design focus)",
+      "skill": "system design"
+    },
+    {
+      "name": "PMP / Agile PM",
+      "skill": "leadership"
+    },
+    {
+      "name": "ICF-aligned coaching fundamentals",
+      "skill": "mentoring"
+    },
+    {
+      "name": "AWS Certified Developer",
+      "skill": "cloud"
+    },
+    {
+      "name": "Google Cloud Associate Engineer",
+      "skill": "cloud"
+    },
+    {
+      "name": "CKA \u2014 Certified Kubernetes Administrator",
+      "skill": "kubernetes"
+    },
+    {
+      "name": "CKAD",
+      "skill": "kubernetes"
+    },
+    {
+      "name": "AWS Solutions Architect Professional",
+      "skill": "architecture"
+    }
+  ],
+  "breakdown": {
+    "role_match": 0.0,
+    "keywords": 0.0,
+    "experience": 0.0,
+    "format": 0.88
+  },
+  "target_role": "senior software engineer",
+  "analyzed_at": "2026-04-09T05:08:24.438846+00:00",
+  "error": null
+}

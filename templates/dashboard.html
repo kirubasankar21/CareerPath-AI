@@ -1,0 +1,590 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard — {{ employee.name }} | CareerPath AI</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body class="page page--dashboard">
+  <div class="dash-bg" aria-hidden="true"></div>
+  <div class="dash-orbs" aria-hidden="true">
+    <span class="orb orb--1"></span>
+    <span class="orb orb--2"></span>
+  </div>
+
+  <input type="checkbox" id="sidebar-toggle" class="sidebar-toggle" aria-hidden="true" />
+  <label for="sidebar-toggle" class="sidebar-scrim" aria-hidden="true"></label>
+
+  <div class="dashboard-shell">
+    <!-- Fixed sidebar -->
+    <aside class="sidebar glass glass--blur" aria-label="Main navigation">
+      <div class="sidebar__brand">
+        <a class="sidebar__logo" href="{{ url_for('index') }}">
+          <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L3 7v10l9 5 9-5V7l-9-5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 22V12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </a>
+        <span class="sidebar__title">CareerPath AI</span>
+      </div>
+      <nav class="sidebar__nav">
+        <a class="sidebar__link" href="#profile">
+          <span class="sidebar__ico" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></span>
+          Profile
+        </a>
+        <a class="sidebar__link" href="#dashboard">
+          <span class="sidebar__ico" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="3" y="3" width="7" height="9"/><rect x="14" y="3" width="7" height="5"/><rect x="14" y="12" width="7" height="9"/><rect x="3" y="16" width="7" height="5"/></svg></span>
+          Dashboard
+        </a>
+        <a class="sidebar__link" href="#goals">
+          <span class="sidebar__ico" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg></span>
+          Goals
+        </a>
+        <a class="sidebar__link" href="#learning">
+          <span class="sidebar__ico" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg></span>
+          Learning
+        </a>
+        <a class="sidebar__link" href="#resume-analyzer">
+          <span class="sidebar__ico" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></span>
+          Resume
+        </a>
+        <a class="sidebar__link" href="#career-opportunities">
+          <span class="sidebar__ico" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg></span>
+          Opportunities
+        </a>
+        <a class="sidebar__link" href="#career-path">
+          <span class="sidebar__ico" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 000-7h-11"/><circle cx="18" cy="5" r="3"/></svg></span>
+          Career Path
+        </a>
+      </nav>
+      <label for="sidebar-toggle" class="sidebar__close" aria-label="Close menu">×</label>
+    </aside>
+
+    <div class="dashboard-main-wrap">
+      <header class="dash-topbar glass glass--blur">
+        <label for="sidebar-toggle" class="dash-menu-btn" aria-label="Open menu">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+        </label>
+        <div class="dash-topbar__center">
+          <span class="dash-topbar__label">Viewing</span>
+          <label class="sr-only" for="employee-switch">Switch employee</label>
+          <select id="employee-switch" class="select-glass" onchange="if(this.value) location.href=this.value">
+            {% for e in employees %}
+            <option value="{{ url_for('dashboard', employee_id=e.id) }}" {% if e.id == employee.id %}selected{% endif %}>{{ e.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <a class="btn btn--ghost btn--sm" href="{{ url_for('index') }}">Home</a>
+      </header>
+
+      {% with messages = get_flashed_messages(with_categories=true) %}
+      {% if messages %}
+      <div class="flash-wrap container--dash" role="region" aria-label="Notifications">
+        {% for category, message in messages %}
+        <div class="flash flash--{{ category }}" role="alert">{{ message }}</div>
+        {% endfor %}
+      </div>
+      {% endif %}
+      {% endwith %}
+
+      <main class="dashboard-main container--dash">
+        <!-- Profile -->
+        <section id="profile" class="panel-dash glass glass--blur card--lift fade-in">
+          <header class="panel-dash__head">
+            <span class="icon-wrap icon-wrap--profile" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            </span>
+            <div>
+              <p class="eyebrow">Profile</p>
+              <h1 class="panel-dash__title">{{ employee.name }}</h1>
+            </div>
+          </header>
+          <div class="profile-hero">
+            <div class="profile-avatar-wrap">
+              <div class="profile-avatar" aria-hidden="true">
+                <span class="profile-avatar__img">{{ employee.name[:1] }}</span>
+              </div>
+              <p class="profile-role">{{ employee.role }}</p>
+              <p class="muted profile-exp">{{ employee.experience_years }} years experience</p>
+            </div>
+            <div class="profile-skills-block">
+              <h3 class="subheading subheading--inline">Skills</h3>
+              <ul class="profile-skill-bars">
+                {% for row in progress.per_skill %}
+                <li class="profile-skill-row">
+                  <div class="profile-skill-meta">
+                    <span>{{ row.skill | title }}</span>
+                    <span class="profile-skill-pct">{{ row.progress }}%</span>
+                  </div>
+                  <div class="bar-track bar-track--shine profile-bar-track">
+                    <div class="bar-fill bar-fill--profile bar-fill--animate {% if row.has_skill %}is-done{% endif %}" style="--bar-w: {{ row.progress }}%;"></div>
+                  </div>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Dashboard + AI insight -->
+        <section id="dashboard" class="panel-dash glass glass--blur card--lift fade-in">
+          <header class="panel-dash__head">
+            <span class="icon-wrap icon-wrap--ai" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 3a6 6 0 00-6 6c0 1 .23 2.23 1 3l2 8h6l2-8c.77-.77 1-2 1-3a6 6 0 00-6-6z"/><path d="M10 21h4"/></svg>
+            </span>
+            <div>
+              <p class="eyebrow">Dashboard</p>
+              <h2 class="panel-dash__title">Overview</h2>
+            </div>
+          </header>
+
+          <div class="ai-insight glass-inset">
+            <span class="ai-insight__icon" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+            </span>
+            <div class="ai-insight__text">
+              <strong>AI Insight</strong>
+              <p>
+                {% if gap.missing_skills|length >= 2 %}
+                You are {{ progress.overall_percent }}% ready for a promotion. Focus on {{ gap.missing_skills[0]|title }} &amp; {{ gap.missing_skills[1]|title }}.
+                {% elif gap.missing_skills|length == 1 %}
+                You are {{ progress.overall_percent }}% ready for a promotion. Focus on {{ gap.missing_skills[0]|title }}.
+                {% else %}
+                You are {{ progress.overall_percent }}% ready for a promotion. Keep building on your strengths — you cover all required skills for this target role.
+                {% endif %}
+              </p>
+            </div>
+          </div>
+
+          <div class="stat-grid">
+            <div class="stat-card stat-card--interactive">
+              <span class="stat-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M22 12h-4l-3 9L9 3l-3 9H2"/></svg></span>
+              <span class="stat-label">Role fit</span>
+              <span class="stat-value text-gradient">{{ "%.0f"|format(gap.role_fit_score * 100) }}%</span>
+              <span class="muted small">vs target role</span>
+            </div>
+            <div class="stat-card stat-card--interactive">
+              <span class="stat-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg></span>
+              <span class="stat-label">Market fit</span>
+              <span class="stat-value text-gradient-soft">{{ "%.0f"|format(gap.market_alignment_hint * 100) }}%</span>
+              <span class="muted small">trending overlap</span>
+            </div>
+            <div class="stat-card stat-card--interactive">
+              <span class="stat-icon" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 20V10M18 20V4M6 20v-4"/></svg></span>
+              <span class="stat-label">Coverage</span>
+              <span class="stat-value">{{ progress.overall_percent }}%</span>
+              <span class="muted small">required skills</span>
+            </div>
+          </div>
+        </section>
+
+        <!-- Skill gap: Required vs Current -->
+        <section id="skill-gap" class="panel-dash glass glass--blur card--lift fade-in">
+          <header class="panel-dash__head">
+            <span class="icon-wrap icon-wrap--gap" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M18 20V10M12 20V4M6 20v-6"/><path d="M3 20h18"/></svg>
+            </span>
+            <div>
+              <p class="eyebrow">Analysis</p>
+              <h2 class="panel-dash__title">Skill gap analysis</h2>
+              <p class="panel-sub">Target: {{ employee.desired_role_key | replace('_', ' ') }}</p>
+            </div>
+          </header>
+          <div class="skill-gap-grid">
+            <div class="skill-gap-col glass-inset">
+              <h3 class="skill-gap-col__title">
+                <svg class="skill-gap-col__ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 11l3 3L22 4"/><path d="M21 12v7a2 2 0 01-2 2H5a2 2 0 01-2-2V5a2 2 0 012-2h11"/></svg>
+                Required
+              </h3>
+              <p class="skill-gap-col__hint">Green = met · Red = gap</p>
+              <div class="bar-chart">
+                {% for row in progress.per_skill %}
+                <div class="bar-item">
+                  <span class="bar-name">{{ row.skill | title }}</span>
+                  <div class="bar-track bar-track--shine">
+                    {% if row.has_skill %}
+                    <div class="bar-fill bar-fill--req-met bar-fill--animate" style="--bar-w: 100%;"></div>
+                    {% else %}
+                    <div class="bar-fill bar-fill--req-miss bar-fill--animate" style="--bar-w: 100%;"></div>
+                    {% endif %}
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="skill-gap-col glass-inset">
+              <h3 class="skill-gap-col__title">
+                <svg class="skill-gap-col__ico" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 20V10M18 20V4M6 20v-4"/></svg>
+                Current proficiency
+              </h3>
+              <p class="skill-gap-col__hint">Animated coverage toward role</p>
+              <div class="bar-chart">
+                {% for row in progress.per_skill %}
+                <div class="bar-item">
+                  <span class="bar-name">{{ row.skill | title }}</span>
+                  <div class="bar-track bar-track--shine">
+                    <div class="bar-fill bar-fill--current bar-fill--animate {% if row.has_skill %}is-strong{% endif %}" style="--bar-w: {{ row.progress }}%;"></div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <!-- Goals -->
+        <section id="goals" class="panel-dash glass glass--blur card--lift fade-in">
+          <header class="panel-dash__head">
+            <span class="icon-wrap icon-wrap--route" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="12" cy="12" r="10"/><circle cx="12" cy="12" r="6"/><circle cx="12" cy="12" r="2"/></svg>
+            </span>
+            <div>
+              <p class="eyebrow">Goals</p>
+              <h2 class="panel-dash__title">Career goals</h2>
+            </div>
+          </header>
+          <p class="goals-text">{{ employee.career_goals or 'Add career goals from the home page to personalize your plan.' }}</p>
+          <div class="goals-progress">
+            <div class="progress-ring-wrap" style="--progress: {{ progress.overall_percent }};">
+              <div class="progress-ring" role="img" aria-label="Goal completion {{ progress.overall_percent }} percent"></div>
+              <span class="progress-ring__label">{{ progress.overall_percent }}%</span>
+            </div>
+            <p class="muted small goals-progress__cap">Readiness toward required skills for your target role</p>
+          </div>
+        </section>
+
+        <!-- Salary + Gamification row -->
+        <div class="dash-row-2">
+          <section class="panel-dash glass glass--blur card--lift fade-in">
+            <header class="panel-dash__head">
+              <span class="icon-wrap icon-wrap--salary" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/></svg>
+              </span>
+              <div>
+                <p class="eyebrow">Compensation</p>
+                <h2 class="panel-dash__title">Salary outlook</h2>
+                <p class="panel-sub">{{ salary.disclaimer }}</p>
+              </div>
+            </header>
+            <div class="salary-compare">
+              <div class="salary-block">
+                <span class="salary-block__label">Current benchmark</span>
+                <span class="salary-block__num">${{ "{:,}".format(salary.breakdown.role_base + salary.breakdown.experience_bonus) }}</span>
+                <span class="muted small">Role + experience baseline</span>
+              </div>
+              <div class="salary-arrow" aria-hidden="true">
+                <svg width="32" height="32" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12l7-7 7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+              <div class="salary-block salary-block--future">
+                <span class="salary-block__label">Future estimate</span>
+                <span class="salary-block__num salary-block__num--big">${{ "{:,}".format(salary.estimated_annual_usd) }}</span>
+                <span class="muted small">With readiness bonus</span>
+              </div>
+            </div>
+            <ul class="salary-breakdown salary-breakdown--compact">
+              <li><span class="dot dot--blue"></span> Role baseline: ${{ "{:,}".format(salary.breakdown.role_base) }}</li>
+              <li><span class="dot dot--green"></span> Experience: +${{ "{:,}".format(salary.breakdown.experience_bonus) }}</li>
+              <li><span class="dot dot--mint"></span> Readiness: +${{ "{:,}".format(salary.breakdown.readiness_bonus) }}</li>
+            </ul>
+          </section>
+
+          <section class="panel-dash glass glass--blur card--lift fade-in">
+            <header class="panel-dash__head">
+              <span class="icon-wrap icon-wrap--spark" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+              </span>
+              <div>
+                <p class="eyebrow">Gamification</p>
+                <h2 class="panel-dash__title">Achievements</h2>
+              </div>
+            </header>
+            <div class="gamify-badges">
+              <div class="gamify-badge {% if progress.overall_percent >= 25 %}gamify-badge--earned{% endif %}">
+                <span class="gamify-badge__ico" aria-hidden="true">🌱</span>
+                <span class="gamify-badge__name">Beginner</span>
+              </div>
+              <div class="gamify-badge {% if progress.overall_percent >= 50 %}gamify-badge--earned{% endif %}">
+                <span class="gamify-badge__ico" aria-hidden="true">⚡</span>
+                <span class="gamify-badge__name">Skill Builder</span>
+              </div>
+              <div class="gamify-badge {% if progress.overall_percent >= 75 %}gamify-badge--earned{% endif %}">
+                <span class="gamify-badge__ico" aria-hidden="true">🚀</span>
+                <span class="gamify-badge__name">Fast Learner</span>
+              </div>
+            </div>
+            <p class="muted small gamify-note">Unlock tiers by raising skill coverage toward your target role.</p>
+            <h3 class="subheading">Earned badges</h3>
+            <div class="badge-row">
+              {% for b in badges %}
+              <div class="badge-pill" title="{{ b.criteria }}"><span class="badge-icon">🏅</span> {{ b.name }}</div>
+              {% else %}
+              <p class="muted small">Complete milestones to earn more badges.</p>
+              {% endfor %}
+            </div>
+          </section>
+        </div>
+
+        <!-- Market trends -->
+        <section id="market" class="panel-dash glass glass--blur card--lift fade-in">
+          <header class="panel-dash__head">
+            <span class="icon-wrap icon-wrap--market" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3 3v18h18"/><path d="M18 17V9M13 17V5M8 17v-3"/></svg>
+            </span>
+            <div>
+              <p class="eyebrow">Market</p>
+              <h2 class="panel-dash__title">Trending skills</h2>
+              <p class="panel-sub">Demand-weighted snapshot</p>
+            </div>
+          </header>
+          <ul class="market-chart-list">
+            {% for m in top_market_skills %}
+            <li class="market-chart-row">
+              <span class="market-chart-trend {% if loop.index % 2 == 1 %}market-chart-trend--up{% else %}market-chart-trend--down{% endif %}" aria-hidden="true">{% if loop.index % 2 == 1 %}↑{% else %}↓{% endif %}</span>
+              <span class="market-chart-name">{{ m.skill | title }}</span>
+              <span class="market-chart-bar-wrap">
+                <span class="market-chart-bar" style="--w: {{ (m.demand_score * 10)|int }}%;"></span>
+              </span>
+              <span class="market-chart-score">{{ "%.1f"|format(m.demand_score) }}</span>
+            </li>
+            {% endfor %}
+          </ul>
+        </section>
+
+        <!-- Learning / Recommendations -->
+        <section id="learning" class="panel-dash glass glass--blur card--lift fade-in">
+          <header class="panel-dash__head">
+            <span class="icon-wrap icon-wrap--ai" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M12 3a6 6 0 00-6 6c0 1 .23 2.23 1 3l2 8h6l2-8c.77-.77 1-2 1-3a6 6 0 00-6-6z"/></svg>
+            </span>
+            <div>
+              <p class="eyebrow">Recommendations</p>
+              <h2 class="panel-dash__title">Learning &amp; career moves</h2>
+            </div>
+          </header>
+          <div class="rec-panels">
+            <div class="rec-panel glass-inset">
+              <h3 class="rec-panel__title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19.5A2.5 2.5 0 016.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 014 19.5v-15A2.5 2.5 0 016.5 2z"/></svg>
+                Learning suggestions
+              </h3>
+              <ul class="rec-panel__list">
+                {% for c in learning_path %}
+                <li class="rec-panel__item">
+                  <span class="rec-panel__check" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></span>
+                  <div>
+                    <strong>{{ c.title }}</strong>
+                    <span class="muted small">{{ c.focus_skill | title }} · {{ c.provider }} · {{ c.hours }}</span>
+                  </div>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+            <div class="rec-panel glass-inset">
+              <h3 class="rec-panel__title">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M7 17L17 7M7 7h10v10"/></svg>
+                Career suggestions
+              </h3>
+              <ul class="rec-panel__list">
+                {% for o in internal_ops %}
+                <li class="rec-panel__item">
+                  <span class="rec-panel__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+                  <span>{{ o }}</span>
+                </li>
+                {% endfor %}
+                {% for c in certifications %}
+                <li class="rec-panel__item">
+                  <span class="rec-panel__arrow" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></span>
+                  <span><strong>{{ c.name }}</strong> — {{ c.issuer }}</span>
+                </li>
+                {% endfor %}
+              </ul>
+            </div>
+          </div>
+        </section>
+
+        <!-- Resume Analyzer -->
+        <section id="resume-analyzer" class="panel-dash glass glass--blur card--lift fade-in">
+          <header class="panel-dash__head panel-dash__head--row">
+            <div class="panel-dash__head-start">
+              <span class="icon-wrap icon-wrap--resume" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+              </span>
+              <div>
+                <p class="eyebrow">AI-powered</p>
+                <h2 class="panel-dash__title">📄 Resume Analyzer &amp; Career Booster</h2>
+                <p class="panel-sub">Upload your resume (PDF or TXT). We score it against your target role and suggest courses.</p>
+              </div>
+            </div>
+            {% if resume_analysis %}
+            <div class="panel-dash__head-actions">
+              <a class="btn btn--primary btn--sm" href="{{ url_for('resume_page', employee_id=employee.id) }}">View last results ({{ resume_analysis.score }}/100)</a>
+            </div>
+            {% endif %}
+          </header>
+
+          <form class="resume-upload-form" method="post" action="{{ url_for('upload_resume', employee_id=employee.id) }}" enctype="multipart/form-data" id="resume-upload-form">
+            <div class="resume-dropzone" id="resume-dropzone" tabindex="0" role="button" aria-label="Drop resume file here or click to browse">
+              <input type="file" name="resume" id="resume-file" class="resume-file-input" accept=".pdf,.txt,application/pdf,text/plain" required />
+              <div class="resume-dropzone__inner">
+                <span class="resume-dropzone__icon" aria-hidden="true">
+                  <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+                </span>
+                <p class="resume-dropzone__title"><strong>Drag &amp; drop</strong> your resume here</p>
+                <p class="muted small">or click to browse · PDF or TXT · max 2&nbsp;MB</p>
+                <p class="resume-dropzone__file muted small" id="resume-file-label" hidden></p>
+              </div>
+            </div>
+            <div class="resume-upload-actions">
+              <button type="submit" class="btn btn--primary">Analyze resume</button>
+            </div>
+          </form>
+        </section>
+
+        <!-- Career Opportunities -->
+        <section id="career-opportunities" class="panel-dash glass glass--blur card--lift fade-in">
+          <header class="panel-dash__head panel-dash__head--row">
+            <div class="panel-dash__head-start">
+              <span class="icon-wrap icon-wrap--jobs" aria-hidden="true">
+                <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg>
+              </span>
+              <div>
+                <p class="eyebrow">Live matches</p>
+                <h2 class="panel-dash__title">🚀 Career Opportunities</h2>
+                <p class="panel-sub">
+                  Based on your skills &amp; target role
+                  {% if career_opportunities.source == 'live' %}
+                  <span class="jobs-badge jobs-badge--live">Live listings</span>
+                  {% else %}
+                  <span class="jobs-badge jobs-badge--demo">Curated sample</span>
+                  {% endif %}
+                </p>
+              </div>
+            </div>
+            <div class="panel-dash__head-actions">
+              <a class="btn btn--ghost btn--sm" href="{{ career_opportunities.linkedin_jobs_url }}" target="_blank" rel="noopener noreferrer">View on LinkedIn</a>
+              <a class="btn btn--primary btn--sm" href="{{ url_for('jobs_page', employee_id=employee.id) }}">View more</a>
+            </div>
+          </header>
+          <div class="jobs-grid jobs-grid--compact">
+            {% for job in career_opportunities.jobs[:5] %}
+            <article class="job-card card--lift">
+              <div class="job-card__border" aria-hidden="true"></div>
+              <h3 class="job-card__title">
+                <span class="job-card__ico" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg></span>
+                {{ job.title }}
+              </h3>
+              <p class="job-card__line">
+                <span class="job-card__mini" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3 21h18M5 21V7l8-4 8 4v14M9 21v-4h6v4"/></svg></span>
+                {{ job.company }}
+              </p>
+              <p class="job-card__line">
+                <span class="job-card__mini" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+                {{ job.location }}
+              </p>
+              <a class="btn btn--primary btn--block job-card__apply" href="{{ job.apply_url }}" target="_blank" rel="noopener noreferrer">Apply</a>
+            </article>
+            {% endfor %}
+          </div>
+        </section>
+
+        <!-- Resume tips -->
+        <section class="panel-dash glass glass--blur card--lift fade-in">
+          <header class="panel-dash__head">
+            <span class="icon-wrap icon-wrap--doc" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </span>
+            <div>
+              <p class="eyebrow">Resume</p>
+              <h2 class="panel-dash__title">Improvement tips</h2>
+            </div>
+          </header>
+          <ul class="tips-list tips-list--dash">
+            {% for t in resume_tips %}
+            <li>{{ t }}</li>
+            {% endfor %}
+          </ul>
+        </section>
+
+        <!-- Career roadmap — highlight CURRENT -->
+        <section id="career-path" class="panel-dash glass glass--blur card--lift fade-in">
+          <header class="panel-dash__head">
+            <span class="icon-wrap icon-wrap--route" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><circle cx="6" cy="19" r="3"/><path d="M9 19h8.5a3.5 3.5 0 000-7h-11"/><circle cx="18" cy="5" r="3"/></svg>
+            </span>
+            <div>
+              <p class="eyebrow">Trajectory</p>
+              <h2 class="panel-dash__title">Career roadmap</h2>
+              <p class="panel-sub">Current → Next → Future</p>
+            </div>
+          </header>
+          <div class="roadmap-h">
+            <div class="roadmap-h__track" aria-hidden="true">
+              <div class="roadmap-h__track-fill"></div>
+            </div>
+            <div class="roadmap-h__steps">
+              <div class="roadmap-h__step roadmap-h__step--highlight roadmap-h__step--current">
+                <div class="roadmap-h__node roadmap-h__node--pulse">
+                  <span class="roadmap-h__dot roadmap-h__dot--active"></span>
+                </div>
+                <span class="roadmap-h__label roadmap-h__label--accent">Current · You are here</span>
+                <strong class="roadmap-h__title">{{ career_ladder[0] }}</strong>
+              </div>
+              <div class="roadmap-h__step">
+                <div class="roadmap-h__node">
+                  <span class="roadmap-h__dot"></span>
+                </div>
+                <span class="roadmap-h__label">Next</span>
+                <strong class="roadmap-h__title">{{ career_ladder[1] }}</strong>
+              </div>
+              <div class="roadmap-h__step">
+                <div class="roadmap-h__node">
+                  <span class="roadmap-h__dot"></span>
+                </div>
+                <span class="roadmap-h__label">Future</span>
+                <strong class="roadmap-h__title">{{ career_ladder[2] }}</strong>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel-dash glass glass--blur card--lift fade-in innovation-inline">
+          <header class="panel-dash__head">
+            <span class="icon-wrap icon-wrap--spark" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+            </span>
+            <div>
+              <p class="eyebrow">Why us</p>
+              <h2 class="panel-dash__title">CareerPath AI</h2>
+            </div>
+          </header>
+          <div class="innovation-grid innovation-grid--compact">
+            <article class="innov-tile">
+              <h3>Data-driven growth</h3>
+              <p>Every insight ties to your profile, role requirements, and market trends.</p>
+            </article>
+            <article class="innov-tile">
+              <h3>AI personalization</h3>
+              <p>Vector similarity finds the gaps and resources that matter for you.</p>
+            </article>
+            <article class="innov-tile">
+              <h3>Industry alignment</h3>
+              <p>Skills and certifications aimed at real employer demand.</p>
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <footer class="site-footer glass-footer dash-footer">
+        <div class="container--dash footer-inner">
+          <span>CareerPath AI</span>
+          <span class="muted">Interests: {{ employee.interests or '—' }}</span>
+        </div>
+      </footer>
+    </div>
+  </div>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+  <script src="{{ url_for('static', filename='resume-upload.js') }}"></script>
+</body>
+</html>

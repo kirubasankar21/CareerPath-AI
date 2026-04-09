@@ -1,0 +1,87 @@
+[
+  {
+    "id": "ecbd6732-5a5d-410c-b41e-878ebb6083c7",
+    "name": "Alex Rivera",
+    "role": "Software Engineer",
+    "skills": [
+      "Python",
+      "Git",
+      "SQL",
+      "JavaScript"
+    ],
+    "experience_years": 3,
+    "interests": "Backend systems, APIs, open source",
+    "career_goals": "Senior Software Engineer within 2 years",
+    "desired_role_key": "senior software engineer"
+  },
+  {
+    "id": "fda402da-1381-4b9a-a507-17888e490600",
+    "name": "Jordan Kim",
+    "role": "Data Analyst",
+    "skills": [
+      "SQL",
+      "Excel",
+      "Visualization",
+      "Python"
+    ],
+    "experience_years": 2,
+    "interests": "Experimentation, storytelling with data",
+    "career_goals": "Transition to Data Scientist",
+    "desired_role_key": "data scientist"
+  },
+  {
+    "id": "1c54e135-052c-43bd-9892-4f0b76b6a61b",
+    "name": "Sam Patel",
+    "role": "Junior Developer",
+    "skills": [
+      "JavaScript",
+      "HTML",
+      "CSS",
+      "React"
+    ],
+    "experience_years": 1,
+    "interests": "Web performance, UX",
+    "career_goals": "Become a well-rounded Software Engineer",
+    "desired_role_key": "software engineer"
+  },
+  {
+    "id": "0ac85bcb-7fca-4501-868a-e4bc8890e8d6",
+    "name": "Kiruba Sankar",
+    "role": "Software engine",
+    "skills": [
+      "Python"
+    ],
+    "experience_years": 2,
+    "interests": "mentoring",
+    "career_goals": "become a HR in 2 years",
+    "desired_role_key": "software engineer"
+  },
+  {
+    "id": "b4e51432-e324-416a-843f-8b6341136de3",
+    "name": "karthikeyan",
+    "role": "software engineer",
+    "skills": [
+      "java",
+      "SQL",
+      "Python"
+    ],
+    "experience_years": 5,
+    "interests": "leadership",
+    "career_goals": "become a manager in 3 years",
+    "desired_role_key": "senior software engineer"
+  },
+  {
+    "id": "18b790e8-a153-4041-8bad-05aca2f2133c",
+    "name": "karthikeyan",
+    "role": "software engineer",
+    "skills": [
+      "java",
+      "SQL",
+      "Python"
+    ],
+    "experience_years": 5,
+    "interests": "leadership",
+    "career_goals": "become a manager in 3 years",
+    "desired_role_key": "senior software engineer"
+  }
+]

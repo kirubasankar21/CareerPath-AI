@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Resume Analysis — {{ employee.name }} | CareerPath AI</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body class="page page--dashboard page--resume-result">
+  <div class="dash-bg" aria-hidden="true"></div>
+  <div class="dash-orbs" aria-hidden="true">
+    <span class="orb orb--1"></span>
+    <span class="orb orb--2"></span>
+  </div>
+
+  <header class="jobs-page-header glass glass--blur resume-page-header">
+    <div class="container--dash jobs-page-header__inner">
+      <a class="btn btn--ghost btn--sm" href="{{ url_for('dashboard', employee_id=employee.id) }}#resume-analyzer">← Dashboard</a>
+      <div class="jobs-page-header__titles">
+        <p class="eyebrow">📄 Resume Analyzer &amp; Career Booster</p>
+        <h1 class="jobs-page-title">Results for {{ employee.name }}</h1>
+        <p class="muted jobs-page-sub">Target role: <strong>{{ analysis.target_role | replace('_', ' ') | title }}</strong></p>
+      </div>
+      <label class="sr-only" for="employee-switch-resume">Switch employee</label>
+      <select id="employee-switch-resume" class="select-glass" onchange="if(this.value) location.href=this.value">
+        {% for e in employees %}
+        <option value="{{ url_for('resume_page', employee_id=e.id) }}" {% if e.id == employee.id %}selected{% endif %}>{{ e.name }}</option>
+        {% endfor %}
+      </select>
+    </div>
+  </header>
+
+  <main class="container--dash resume-result-main">
+    <section class="panel-dash glass glass--blur resume-score-panel card--lift">
+      <div class="resume-score-layout">
+        <div class="resume-score-ring-wrap" style="--score: {{ analysis.score }};">
+          <div class="resume-score-ring" role="img" aria-label="Resume score {{ analysis.score }} out of 100"></div>
+          <div class="resume-score-ring__label">
+            <span class="resume-score-ring__value">{{ analysis.score }}</span>
+            <span class="resume-score-ring__max">/ 100</span>
+          </div>
+        </div>
+        <div class="resume-score-meta">
+          <h2 class="resume-score-heading">📊 Resume score</h2>
+          <p class="muted">Weighted blend: role skills (high), market keywords (medium), experience signals &amp; length (lower).</p>
+          {% if analysis.breakdown %}
+          <ul class="resume-breakdown">
+            <li><span>Role alignment</span><span>{{ "%.0f"|format(analysis.breakdown.role_match * 100) }}%</span></li>
+            <li><span>Keywords</span><span>{{ "%.0f"|format(analysis.breakdown.keywords * 100) }}%</span></li>
+            <li><span>Experience signals</span><span>{{ "%.0f"|format(analysis.breakdown.experience * 100) }}%</span></li>
+            <li><span>Format / length</span><span>{{ "%.0f"|format(analysis.breakdown.format * 100) }}%</span></li>
+          </ul>
+          {% endif %}
+        </div>
+      </div>
+    </section>
+
+    <div class="resume-result-grid">
+      <section class="panel-dash glass glass--blur resume-card-section card--lift">
+        <h3 class="resume-section-title">📉 Missing skills</h3>
+        <p class="muted small">Required for your target role but not clearly found in the resume text.</p>
+        <div class="tag-cloud">
+          {% for s in analysis.missing_skills %}
+          <span class="skill-tag skill-tag--miss">{{ s | title }}</span>
+          {% else %}
+          <span class="muted">None detected — great coverage for this role.</span>
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="panel-dash glass glass--blur resume-card-section card--lift">
+        <h3 class="resume-section-title">💪 Strengths</h3>
+        <p class="muted small">Skills and keywords detected in your resume.</p>
+        <div class="tag-cloud">
+          {% for s in analysis.strengths %}
+          <span class="skill-tag skill-tag--ok">{{ s | title }}</span>
+          {% else %}
+          <span class="muted">Upload a richer resume to surface more strengths.</span>
+          {% endfor %}
+        </div>
+      </section>
+    </div>
+
+    <section class="panel-dash glass glass--blur resume-card-section card--lift">
+      <h3 class="resume-section-title">📌 Suggestions</h3>
+      <ul class="resume-suggestions">
+        {% for line in analysis.suggestions %}
+        <li>{{ line }}</li>
+        {% endfor %}
+      </ul>
+    </section>
+
+    <div class="resume-result-grid">
+      <section class="panel-dash glass glass--blur resume-card-section card--lift">
+        <h3 class="resume-section-title">🎓 Recommended courses</h3>
+        <div class="resume-course-grid">
+          {% for c in analysis.recommended_courses %}
+          <div class="resume-course-card">
+            <span class="resume-course-card__skill">{{ c.skill | title }}</span>
+            <strong>{{ c.title }}</strong>
+          </div>
+          {% endfor %}
+        </div>
+      </section>
+
+      <section class="panel-dash glass glass--blur resume-card-section card--lift">
+        <h3 class="resume-section-title">🏆 Certifications</h3>
+        <div class="resume-cert-grid">
+          {% for cert in analysis.recommended_certifications %}
+          <div class="resume-cert-badge">
+            <span class="resume-cert-badge__name">{{ cert.name }}</span>
+            <span class="muted small">Gap: {{ cert.skill | title }}</span>
+          </div>
+          {% endfor %}
+        </div>
+      </section>
+    </div>
+
+    <p class="muted small resume-footer-note">Analysis uses keyword matching against your profile target role — not legal or hiring advice.</p>
+  </main>
+
+  <footer class="site-footer glass-footer dash-footer">
+    <div class="container--dash footer-inner">
+      <span>CareerPath AI</span>
+      <a class="btn btn--ghost btn--sm" href="{{ url_for('dashboard', employee_id=employee.id) }}#resume-analyzer">Re-upload resume</a>
+    </div>
+  </footer>
+</body>
+</html>

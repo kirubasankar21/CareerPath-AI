@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CareerPath AI — Personalized Career Development</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body class="page page--home">
+  <div class="landing-bg" aria-hidden="true"></div>
+  <div class="float-icons float-icons--1" aria-hidden="true">
+    <span class="float-icon float-icon--a">
+      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M24 4L44 14V34L24 44L4 34V14L24 4Z" stroke="currentColor" stroke-width="1.5" opacity="0.35"/><circle cx="24" cy="24" r="8" stroke="currentColor" stroke-width="1.5" opacity="0.45"/></svg>
+    </span>
+    <span class="float-icon float-icon--b">
+      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 36V12L24 4L40 12V36L24 44L8 36Z" stroke="currentColor" stroke-width="1.5" opacity="0.3"/><path d="M16 20L24 16L32 20V28L24 32L16 28V20Z" stroke="currentColor" stroke-width="1.2" opacity="0.4"/></svg>
+    </span>
+    <span class="float-icon float-icon--c">
+      <svg viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6 38L18 10H30L42 38" stroke="currentColor" stroke-width="1.5" opacity="0.35"/><circle cx="24" cy="28" r="3" fill="currentColor" opacity="0.25"/></svg>
+    </span>
+  </div>
+
+  <!-- Top navbar -->
+  <header class="landing-nav glass glass--header glass--blur">
+    <div class="landing-nav__inner container">
+      <a class="landing-brand" href="{{ url_for('index') }}">
+        <span class="landing-logo" aria-hidden="true">
+          <svg width="28" height="28" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 2L3 7v10l9 5 9-5V7l-9-5z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M12 22V12" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </span>
+        <span class="landing-title">CareerPath AI</span>
+      </a>
+      <a class="btn btn--login" href="#form">Login</a>
+    </div>
+  </header>
+
+  <main class="landing-main">
+    <section class="hero-landing container">
+      <div class="hero-landing__content fade-in">
+        <h1 class="hero-landing__headline">Not just jobs — we build futures</h1>
+        <p class="hero-landing__lead">
+          Skill intelligence, learning paths, and a career roadmap — in one premium workspace.
+        </p>
+        <div class="hero-landing__actions">
+          <a class="btn btn--primary" href="#form">Get Started</a>
+          {% if employees %}
+          <a class="btn btn--ghost" href="{{ url_for('dashboard', employee_id=employees[0].id) }}">Try Demo</a>
+          {% else %}
+          <a class="btn btn--ghost" href="#form">Try Demo</a>
+          {% endif %}
+        </div>
+      </div>
+
+      <div class="hero-landing__card glass glass--card glass--blur card--lift fade-in fade-in--delay">
+        <div class="hero-landing__card-head">
+          <span class="icon-wrap icon-wrap--spark" aria-hidden="true">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </span>
+          <h2 class="card-title">Why teams choose CareerPath AI</h2>
+        </div>
+        <ul class="feature-list">
+          <li><span class="feature-ico" aria-hidden="true">◈</span> <strong>Skill intelligence</strong> — gap analysis vs target roles</li>
+          <li><span class="feature-ico" aria-hidden="true">◇</span> <strong>Learning paths</strong> — courses mapped to every gap</li>
+          <li><span class="feature-ico" aria-hidden="true">→</span> <strong>Roadmaps</strong> — current → next → future roles</li>
+          <li><span class="feature-ico" aria-hidden="true">★</span> <strong>Gamification</strong> — badges &amp; readiness scores</li>
+        </ul>
+      </div>
+    </section>
+
+    <section id="profiles" class="container section">
+      <div class="section-head">
+        <span class="icon-wrap icon-wrap--people" aria-hidden="true">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg>
+        </span>
+        <div>
+          <h2 class="section-title">Sample employees</h2>
+          <p class="section-sub">Jump into a live dashboard — profiles load from local JSON.</p>
+        </div>
+      </div>
+      <div class="card-grid">
+        {% for e in employees %}
+        <a class="employee-card glass glass--card card--lift fade-in" href="{{ url_for('dashboard', employee_id=e.id) }}" style="animation-delay: {{ (loop.index0 * 0.06) }}s">
+          <div class="employee-card__avatar">{{ e.name[:1] }}</div>
+          <div class="employee-card__body">
+            <h3>{{ e.name }}</h3>
+            <p class="muted">{{ e.role }}</p>
+            <p class="small">Goal: {{ e.career_goals[:80] }}{% if e.career_goals|length > 80 %}…{% endif %}</p>
+          </div>
+          <span class="chevron" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </span>
+        </a>
+        {% endfor %}
+      </div>
+    </section>
+
+    <section id="form" class="container section">
+      <div class="form-layout">
+        <div class="glass glass--card form-panel card--lift fade-in">
+          <div class="section-head section-head--sm">
+            <span class="icon-wrap icon-wrap--form" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M16 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="8.5" cy="7" r="4"/><line x1="20" y1="8" x2="20" y2="14"/><line x1="23" y1="11" x2="17" y2="11"/></svg>
+            </span>
+            <div>
+              <h2 class="section-title">Employee profile</h2>
+              <p class="section-sub">One submission creates a profile and opens your dashboard.</p>
+            </div>
+          </div>
+
+          {% if error %}
+          <div class="alert" role="alert">{{ error }}</div>
+          {% endif %}
+
+          <form class="profile-form" method="post" action="{{ url_for('index') }}">
+            <label>
+              Full name
+              <input type="text" name="name" placeholder="Jamie Lee" required />
+            </label>
+            <label>
+              Current role
+              <input type="text" name="role" placeholder="Software Engineer" />
+            </label>
+            <label>
+              Skills <span class="muted">(comma or newline separated)</span>
+              <textarea name="skills" rows="4" placeholder="Python, SQL, Git, …" required></textarea>
+            </label>
+            <div class="row">
+              <label>
+                Years of experience
+                <input type="number" name="experience_years" min="0" max="50" value="2" />
+              </label>
+              <label>
+                Target role
+                <select name="desired_role_key">
+                  {% for r in role_choices %}
+                  <option value="{{ r }}" {% if r == 'software engineer' %}selected{% endif %}>{{ r | replace('_', ' ') | title }}</option>
+                  {% endfor %}
+                </select>
+              </label>
+            </div>
+            <label>
+              Interests
+              <input type="text" name="interests" placeholder="Distributed systems, mentoring, …" />
+            </label>
+            <label>
+              Career goals
+              <textarea name="career_goals" rows="3" placeholder="Become a Tech Lead in 3 years …"></textarea>
+            </label>
+            <button class="btn btn--primary btn--block" type="submit">
+              <svg class="btn-icon" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>
+              Save &amp; open dashboard
+            </button>
+          </form>
+        </div>
+
+        <aside class="glass glass--card aside-panel fade-in fade-in--delay card--lift">
+          <div class="aside-panel__head">
+            <span class="icon-wrap icon-wrap--cpu" aria-hidden="true">
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6"/><line x1="9" y1="1" x2="9" y2="4"/><line x1="15" y1="1" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="23"/><line x1="15" y1="20" x2="15" y2="23"/><line x1="20" y1="9" x2="23" y2="9"/><line x1="20" y1="14" x2="23" y2="14"/><line x1="1" y1="9" x2="4" y2="9"/><line x1="1" y1="14" x2="4" y2="14"/></svg>
+            </span>
+            <h3>How analysis works</h3>
+          </div>
+          <ol class="steps">
+            <li><strong>Normalize</strong> skills to a shared vocabulary.</li>
+            <li><strong>Compare</strong> to role requirements and market trends.</li>
+            <li><strong>Score</strong> fit with vector similarity.</li>
+            <li><strong>Recommend</strong> learning mapped to each gap.</li>
+          </ol>
+        </aside>
+      </div>
+    </section>
+
+    <section id="innovation" class="container section section--innovation">
+      <div class="glass glass--card innovation-block card--lift fade-in">
+        <div class="section-head">
+          <span class="icon-wrap icon-wrap--innov" aria-hidden="true">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M9 18h6M10 22h4M12 2a7 7 0 017 7c0 3.5-2 6.5-4 8h-6c-2-1.5-4-4.5-4-8a7 7 0 017-7z"/></svg>
+          </span>
+          <div>
+            <h2 class="section-title">Why this system is innovative</h2>
+            <p class="section-sub">Measurable growth, not generic career tips.</p>
+          </div>
+        </div>
+        <div class="innovation-grid">
+          <article class="innov-tile">
+            <h3>Data-driven career growth</h3>
+            <p>Structured profiles, role requirements, and demand signals drive every insight.</p>
+          </article>
+          <article class="innov-tile">
+            <h3>AI-based personalization</h3>
+            <p>Lightweight similarity scoring surfaces the gaps that matter for you.</p>
+          </article>
+          <article class="innov-tile">
+            <h3>Industry alignment</h3>
+            <p>Trending skills and certifications keep you aimed at where hiring is hot.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer glass-footer">
+    <div class="container footer-inner">
+      <span>CareerPath AI — hackathon demo</span>
+      <span class="muted">Flask · HTML/CSS · minimal JS</span>
+    </div>
+  </footer>
+
+  <script src="{{ url_for('static', filename='app.js') }}"></script>
+</body>
+</html>

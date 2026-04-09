@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Career Opportunities — {{ employee.name }} | CareerPath AI</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet" />
+</head>
+<body class="page page--dashboard page--jobs">
+  <div class="dash-bg" aria-hidden="true"></div>
+  <div class="dash-orbs" aria-hidden="true">
+    <span class="orb orb--1"></span>
+    <span class="orb orb--2"></span>
+  </div>
+
+  <header class="jobs-page-header glass glass--blur">
+    <div class="container--dash jobs-page-header__inner">
+      <a class="btn btn--ghost btn--sm" href="{{ url_for('dashboard', employee_id=employee.id) }}">← Dashboard</a>
+      <div class="jobs-page-header__titles">
+        <p class="eyebrow">Career Opportunities</p>
+        <h1 class="jobs-page-title">🚀 Jobs for {{ employee.name }}</h1>
+        <p class="muted jobs-page-sub">
+          Target role: <strong>{{ employee.desired_role_key | replace('_', ' ') | title }}</strong>
+          ·
+          {% if career_opportunities.source == 'live' %}
+          <span class="jobs-badge jobs-badge--live">Live API</span>
+          {% else %}
+          <span class="jobs-badge jobs-badge--demo">Sample listings</span>
+          {% endif %}
+        </p>
+      </div>
+      <div class="jobs-page-header__actions">
+        <a class="btn btn--ghost" href="{{ career_opportunities.linkedin_jobs_url }}" target="_blank" rel="noopener noreferrer">View more on LinkedIn</a>
+        <label class="sr-only" for="employee-switch-jobs">Switch employee</label>
+        <select id="employee-switch-jobs" class="select-glass" onchange="if(this.value) location.href=this.value">
+          {% for e in employees %}
+          <option value="{{ url_for('jobs_page', employee_id=e.id) }}" {% if e.id == employee.id %}selected{% endif %}>{{ e.name }}</option>
+          {% endfor %}
+        </select>
+      </div>
+    </div>
+  </header>
+
+  <main class="container--dash jobs-page-main">
+    <p class="jobs-query muted">Search context: <code class="jobs-code">{{ career_opportunities.search_query }}</code></p>
+
+    <div class="jobs-grid">
+      {% for job in career_opportunities.jobs %}
+      <article class="job-card card--lift">
+        <div class="job-card__border" aria-hidden="true"></div>
+        <h2 class="job-card__title">
+          <span class="job-card__ico" aria-hidden="true"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M16 7V5a2 2 0 00-2-2h-4a2 2 0 00-2 2v2"/></svg></span>
+          {{ job.title }}
+        </h2>
+        <p class="job-card__line">
+          <span class="job-card__mini" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M3 21h18M5 21V7l8-4 8 4v14M9 21v-4h6v4"/></svg></span>
+          {{ job.company }}
+        </p>
+        <p class="job-card__line">
+          <span class="job-card__mini" aria-hidden="true"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg></span>
+          {{ job.location }}
+        </p>
+        <a class="btn btn--primary btn--block job-card__apply" href="{{ job.apply_url }}" target="_blank" rel="noopener noreferrer">Apply</a>
+      </article>
+      {% endfor %}
+    </div>
+
+    <div class="jobs-linkedin-cta glass glass--blur">
+      <p class="jobs-linkedin-cta__text">Explore more roles on LinkedIn with your goal keywords.</p>
+      <a class="btn btn--primary" href="{{ career_opportunities.linkedin_jobs_url }}" target="_blank" rel="noopener noreferrer">View more on LinkedIn</a>
+    </div>
+  </main>
+
+  <footer class="site-footer glass-footer dash-footer">
+    <div class="container--dash footer-inner">
+      <span>CareerPath AI</span>
+      <a class="muted" href="{{ url_for('index') }}">Home</a>
+    </div>
+  </footer>
+</body>
+</html>
